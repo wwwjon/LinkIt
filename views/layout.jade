@@ -1,0 +1,74 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        title LinkIt
+        link(rel='stylesheet', href='stylesheets/style.css', type='text/css', media='all')
+        script(src='javascripts/handlebars-v3.0.1.js')
+        script(src='javascripts/jquery-1.11.2.min.js')
+        script(src='javascripts/moment.js')
+        script(src='javascripts/Linkit.js')
+        script(type="text/x-handlebars-template" id="templateContainer").
+            {{#reverse links}}
+            <div class="link">
+            <div class="bubble">
+            <a class="icon" href="{{url}}" target="_blank"></a>
+            </div>
+            <article>
+            <div class="entry">
+            <h2><a href="{{url}}" target="_blank">{{title}}</a></h2>
+            <div class="meta">
+            <span class="date">{{formatDate date}}</span> /
+            <span class="author">{{sender}}</span>
+            {{#equal ../showRanking sender}}
+             /
+            <span class="delete" id="delete{{id}}"> (Delete)</span>
+            {{/equal}}
+            </div>
+            </div>
+            <div class="ranking">
+            <div class="ranking-button up" id="u{{id}}"></div>
+            <div class="count">{{ranking}}</div>
+            <div class="ranking-button down" id="d{{id}}"></div>
+            </div>
+            </article>
+            </div>
+            {{/reverse}}
+    body
+        header
+            .head
+                a.icon
+                h1 LinkIt
+                h2 the front page of the internet
+                .login
+                    - if(user) {
+                        #Welcome Hi #{user}
+                        span#logoutsubmit.button Logout
+                    - } else {
+                        form#login-form(role='form', method='post', action='login')
+                            div
+                                label(for='user') User
+                                input#user.input(name='user', type='text', placeholder='Username', required)
+                            .submits
+                                input#loginsubmit.button(type='submit', value='Login')
+                    - }
+        .content
+            main(role='main')
+                .links
+                    - if(user) {
+                        .link
+                            .bubble
+                                a.icon
+                            article
+                                .entry.post
+                                    form#post-form(role='form', method='post', action='')
+                                        div
+                                            label(for='post-title') Title
+                                            input#post-title.input(name='post-title', type='text', placeholder='Titel')
+                                        div
+                                            label(for='post-link') Link
+                                            input#post-link.input(name='post-link', type='text', placeholder='Link', pattern='(f|ht)tps?://.+', required)
+                                        .submits
+                                            input#postsubmit.button(type='submit', value='Link it!')
+                    - }
+                    block content

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    #container
+        - for (var i = links.length; i >= 0; i--)
+            - val = links[i]
+                if val
+                    .link
+                        .bubble
+                            a.icon(href='#{val.url}' target='_blank')
+                        article
+                            .entry
+                                h2
+                                    a(href='#{val.url}' target='_blank')=val.title
+                                .meta
+                                    span.date=moment(val.date).format('DD.MM.YYYY, HH:mm')
+                                    |  /
+                                    span.author=val.sender
+                                    if (user === val.sender)
+                                        span.delete(id='delete#{val.id}')=' (Delete)'
+                            .ranking
+                                .ranking-button.up(id='u#{val.id}')
+                                .count=val.ranking
+                                .ranking-button.down(id='d#{val.id}')
